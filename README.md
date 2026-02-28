@@ -202,12 +202,6 @@ Array of the nine avaranas with Sanskrit names, transliterations, and meanings.
 
 This project uses a Makefile for local release prep and GitHub Actions for publishing.
 
-### Prerequisites (one-time setup)
-
-1. Create an npm Automation token at [npmjs.com/settings/tokens](https://www.npmjs.com/settings/tokens)
-2. Add it as `NPM_TOKEN` in your repo's GitHub Settings → Secrets → Actions
-3. Ensure the `@vibzart` scope exists on npm
-
 ### Release commands
 
 ```bash
@@ -242,4 +236,4 @@ MIT — Sacred knowledge should be freely computable.
 
 विद्या दानं सर्व दानं प्रधानम् — *The gift of knowledge is the greatest of all gifts.*
 
-Built by [Vibz.Art Studio](https://vibz.art) — Ancient Wisdom. Modern Code.
+Built by [Vibz.Art](https://vibz.art) — Ancient Wisdom. Modern Code.
