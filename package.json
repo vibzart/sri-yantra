@@ -1,0 +1,48 @@
+{
+  "name": "@vibzart/sri-yantra",
+  "version": "0.1.0",
+  "description": "Mathematically precise Sri Yantra SVG generator. Shastra-validated sacred geometry — every marma point a true triple intersection.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "bin": {
+    "sri-yantra": "./dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "generate": "node dist/cli.js",
+    "lint": "tsc --noEmit"
+  },
+  "keywords": [
+    "sri-yantra",
+    "sacred-geometry",
+    "svg",
+    "yantra",
+    "sanskrit",
+    "vedic",
+    "mandala",
+    "hindu",
+    "shakti",
+    "shiva",
+    "panchang",
+    "faithtech"
+  ],
+  "author": "Vibz.Art Studio <hello@vibz.art>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vibzart/sri-yantra"
+  },
+  "homepage": "https://vibz.art/tools/sri-yantra",
+  "devDependencies": {
+    "@types/node": "^25.3.2",
+    "typescript": "^5.7.0"
+  }
+}
