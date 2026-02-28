@@ -19,24 +19,77 @@ The Sri Yantra (श्री यन्त्र) is the most revered yantra in t
 
 This library generates the Sri Yantra **programmatically** from verified mathematical coordinates — not from approximation, not from tracing, but from the geometry itself.
 
-## Usage
+## Quick Start
+
+### CLI
+
+After installing, the `sri-yantra` command is available:
+
+```bash
+npm install -g @vibzart/sri-yantra
+
+# Full yantra
+sri-yantra -o sri-yantra.svg
+
+# Minimal mark (innermost triangles + bindu) — great for favicons
+sri-yantra --minimal --size 64 -o favicon.svg
+
+# Dual-color: Shiva in brown, Shakti in saffron
+sri-yantra --shiva-color "#1A0F0A" --shakti-color "#C9501C" -o dual.svg
+
+# On cream background
+sri-yantra --background "#FDF8F0" -o on-cream.svg
+
+# Triangles only (no decorative elements)
+sri-yantra --no-bhupura --no-lotus -o core.svg
+
+# Filled triangles
+sri-yantra --filled --fill-opacity 0.15 -o filled.svg
+```
+
+#### Animated SVGs
+
+Four animation presets with embedded CSS `@keyframes` (no JavaScript, plays in any browser):
+
+```bash
+# Stroke drawing — triangles draw themselves one by one
+sri-yantra --animated draw -o animated-draw.svg
+
+# Layer reveal — avaranas fade in from outer to inner
+sri-yantra --animated layer-reveal -o animated-reveal.svg
+
+# Breathing bindu — infinite pulsing center point
+sri-yantra --animated breathe -o animated-breathe.svg
+
+# Slow rotation — infinite meditative spin
+sri-yantra --animated rotate -o animated-rotate.svg
+
+# Custom duration (seconds)
+sri-yantra --animated draw --duration 5 -o slow-draw.svg
+```
+
+All animations include `@media (prefers-reduced-motion: reduce)` for accessibility.
+
+Or run without installing:
+
+```bash
+npx @vibzart/sri-yantra -o sri-yantra.svg
+```
+
+Run `sri-yantra --help` for all options.
 
 ### As a library
+
+#### SVG generation (zero dependencies)
 
 ```typescript
 import { generateSriYantra, generateMinimalMark } from '@vibzart/sri-yantra'
 
 // Full Sri Yantra — all 9 avaranas
-const fullSvg = generateSriYantra({
-  size: 1024,
-  color: '#C9501C',
-})
+const fullSvg = generateSriYantra({ size: 1024, color: '#C9501C' })
 
-// Minimal mark — innermost triangles + bindu (for favicons, icons)
-const miniSvg = generateMinimalMark({
-  size: 64,
-  color: '#C9501C',
-})
+// Minimal mark — innermost triangles + bindu
+const miniSvg = generateMinimalMark({ size: 64 })
 
 // Dual-color: Shiva in brown, Shakti in saffron, bindu in gold
 const dualSvg = generateSriYantra({
@@ -51,38 +104,82 @@ const coreSvg = generateSriYantra({
   sixteenPetalLotus: false,
   eightPetalLotus: false,
 })
+```
 
-// Access raw geometry
-import { computeGeometry, NINE_AVARANAS } from '@vibzart/sri-yantra'
+#### Animated SVG
+
+```typescript
+import { generateAnimatedSriYantra } from '@vibzart/sri-yantra/svg'
+
+const svg = generateAnimatedSriYantra({
+  animation: 'draw',     // 'draw' | 'layer-reveal' | 'breathe' | 'rotate'
+  duration: 3,           // seconds
+  easing: 'ease-out',
+})
+```
+
+#### Canvas 2D (zero dependencies)
+
+```typescript
+import { renderToCanvas } from '@vibzart/sri-yantra/canvas'
+
+const canvas = document.getElementById('my-canvas') as HTMLCanvasElement
+const ctx = canvas.getContext('2d')!
+
+renderToCanvas(ctx, { size: 512, color: '#C9501C' })
+```
+
+#### React components
+
+```tsx
+import { SriYantra } from '@vibzart/sri-yantra/react'
+
+// Static SVG
+<SriYantra size={512} color="#C9501C" />
+
+// Animated SVG
+<SriYantra animated animationPreset="draw" size={512} />
+```
+
+#### React Three Fiber (3D)
+
+```tsx
+import { SriYantra3D } from '@vibzart/sri-yantra/react'
+
+<SriYantra3D
+  materialPreset="gold"   // 'gold' | 'copper' | 'crystal'
+  autoRotate
+  width={800}
+  height={600}
+/>
+```
+
+Requires peer dependencies: `three`, `@react-three/fiber`, `@react-three/drei`.
+
+#### Raw geometry & data
+
+```typescript
+import { computeGeometry, NINE_AVARANAS } from '@vibzart/sri-yantra/core'
+import { computeMarmaPoints } from '@vibzart/sri-yantra/core'
 
 const geo = computeGeometry()
-console.log(geo.triangles) // All 9 triangles with coordinates
-console.log(NINE_AVARANAS) // Sanskrit names and meanings
+console.log(geo.triangles)  // 9 triangles with normalized [0,1] coordinates
+console.log(NINE_AVARANAS)  // Sanskrit names, transliterations, meanings
+
+const marma = computeMarmaPoints(geo)
+console.log(marma)  // Triple intersection points (tri-rekha sangama)
 ```
 
-### CLI
+## Subpath Exports
 
-```bash
-# Full yantra in saffron
-npx @vibzart/sri-yantra -o sri-yantra.svg
-
-# Minimal mark for favicon
-npx @vibzart/sri-yantra --minimal --size 64 -o favicon.svg
-
-# Dual-color
-npx @vibzart/sri-yantra --shiva-color "#1A0F0A" --shakti-color "#C9501C" -o dual.svg
-
-# On cream background
-npx @vibzart/sri-yantra --background "#FDF8F0" -o on-cream.svg
-
-# Triangles only
-npx @vibzart/sri-yantra --no-bhupura --no-lotus -o core.svg
-
-# Filled triangles
-npx @vibzart/sri-yantra --filled --fill-opacity 0.15 -o filled.svg
-```
-
-Run `npx @vibzart/sri-yantra --help` for all options.
+| Import | What you get | Dependencies |
+|--------|-------------|--------------|
+| `@vibzart/sri-yantra` | Core + SVG (default) | None |
+| `@vibzart/sri-yantra/core` | Types, geometry, avaranas, marma points | None |
+| `@vibzart/sri-yantra/svg` | SVG renderer + animated SVG | None |
+| `@vibzart/sri-yantra/canvas` | Canvas 2D renderer | None |
+| `@vibzart/sri-yantra/three` | Three.js geometries + materials | `three` |
+| `@vibzart/sri-yantra/react` | React SVG + 3D components | `react`, `three`, `@react-three/fiber`, `@react-three/drei` |
 
 ## The Nine Avaranas
 

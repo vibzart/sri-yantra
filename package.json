@@ -1,6 +1,6 @@
 {
   "name": "@vibzart/sri-yantra",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Mathematically precise Sri Yantra generator — SVG, Canvas, Three.js, React. Shastra-validated sacred geometry with zero-dep core.",
   "type": "module",
   "main": "./dist/index.js",
@@ -74,10 +74,18 @@
     "react": ">=18.0.0"
   },
   "peerDependenciesMeta": {
-    "three": { "optional": true },
-    "@react-three/fiber": { "optional": true },
-    "@react-three/drei": { "optional": true },
-    "react": { "optional": true }
+    "three": {
+      "optional": true
+    },
+    "@react-three/fiber": {
+      "optional": true
+    },
+    "@react-three/drei": {
+      "optional": true
+    },
+    "react": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@types/node": "^25.3.2",
