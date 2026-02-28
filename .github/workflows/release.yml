@@ -3,11 +3,12 @@ name: Release & Publish
 on:
   push:
     branches: [main]
+  workflow_dispatch:
 
 jobs:
   release:
-    # Only run on release commits from `make release-*`
-    if: ${{ startsWith(github.event.head_commit.message, 'release: v') }}
+    # Auto-trigger on release commits, or run manually via workflow_dispatch
+    if: ${{ github.event_name == 'workflow_dispatch' || startsWith(github.event.head_commit.message, 'release: v') }}
     runs-on: ubuntu-latest
     permissions:
       contents: write
