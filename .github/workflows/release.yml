@@ -1,0 +1,57 @@
+name: Release & Publish
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  release:
+    # Only run on release commits from `make release-*`
+    if: startsWith(github.event.head_commit.message, 'release: v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: https://registry.npmjs.org
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Verify CLI
+        run: |
+          node dist/cli.js --output /tmp/test.svg
+          test -s /tmp/test.svg || (echo "CLI produced empty output" && exit 1)
+          node dist/cli.js --minimal --output /tmp/test-min.svg
+          test -s /tmp/test-min.svg || (echo "Minimal CLI produced empty output" && exit 1)
+          echo "✓ CLI generates valid SVGs"
+
+      - name: Extract version
+        id: version
+        run: echo "version=v$(node -p 'require("./package.json").version')" >> "$GITHUB_OUTPUT"
+
+      - name: Create git tag
+        run: |
+          git tag ${{ steps.version.outputs.version }}
+          git push origin ${{ steps.version.outputs.version }}
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create ${{ steps.version.outputs.version }} --generate-notes
+
+      - name: Publish to npm
+        run: npm publish --access public --provenance
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

@@ -4,41 +4,52 @@
  * Mathematically precise Sri Yantra SVG generator.
  * Shastra-validated sacred geometry.
  *
- * Structure per Soundarya Lahari verse 11 (Adi Shankaracharya):
- *   - 4 upward triangles (Shiva)
- *   - 5 downward triangles (Shakti)
- *   - 43 sub-triangles
- *   - 18 Marma Sthanas (triple intersection points)
- *   - 16-petal lotus, 8-petal lotus
- *   - 3 concentric circles
- *   - Bhupura (3 nested squares with 4 gates)
- *   - Bindu (center point)
- *
- * @example
- * ```ts
- * import { generateSriYantra, generateMinimalMark } from '@vibzart/sri-yantra'
- *
- * // Full yantra
- * const fullSvg = generateSriYantra({ size: 1024, color: '#C9501C' })
- *
- * // Minimal mark (favicon/icon)
- * const miniSvg = generateMinimalMark({ size: 64, color: '#C9501C' })
- * ```
+ * Default export includes core geometry + SVG renderers (zero dependencies).
+ * For 3D rendering: import from '@vibzart/sri-yantra/three'
+ * For React components: import from '@vibzart/sri-yantra/react'
+ * For Canvas rendering: import from '@vibzart/sri-yantra/canvas'
  *
  * @see https://vibz.art/tools/sri-yantra
  * @license MIT
  */
 
-export { generateSriYantra, generateMinimalMark } from "./renderer.js";
-export type { RenderOptions, MinimalMarkOptions } from "./renderer.js";
-
+// Core geometry (zero dependencies)
 export {
   computeGeometry,
   getMinimalGeometry,
+  computeMarmaPoints,
+  segmentIntersection,
+  prepareForRender,
+  prepareMinimalForRender,
+  prepareLotus,
+  prepareBhupura,
   NINE_AVARANAS,
-} from "./geometry.js";
+} from "./core/index.js";
+
 export type {
   Point,
   Triangle,
   SriYantraGeometry,
-} from "./geometry.js";
+  MarmaPoint,
+  SubTriangle,
+  Avarana,
+  PreparedGeometry,
+  PreparedTriangle,
+  PreparedLotus,
+  PreparedBhupura,
+  BaseRenderOptions,
+} from "./core/index.js";
+
+// SVG renderers (zero dependencies)
+export {
+  generateSriYantra,
+  generateMinimalMark,
+  generateAnimatedSriYantra,
+} from "./svg/index.js";
+
+export type {
+  RenderOptions,
+  MinimalMarkOptions,
+  AnimatedSvgOptions,
+  AnimationPreset,
+} from "./svg/index.js";

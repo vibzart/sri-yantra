@@ -17,7 +17,8 @@
  */
 
 import { writeFileSync } from "node:fs";
-import { generateSriYantra, generateMinimalMark } from "./renderer.js";
+import { generateSriYantra, generateMinimalMark } from "./svg/renderer.js";
+import { generateAnimatedSriYantra, type AnimationPreset } from "./svg/animated.js";
 
 function printHelp(): void {
   console.log(`
@@ -44,6 +45,8 @@ OPTIONS
   --no-circle             Omit outer circle
   --no-bindu              Omit bindu point
   --circle                Add enclosing circle (minimal mark only)
+  --animated <preset>     Animation preset: draw|layer-reveal|breathe|rotate
+  --duration <s>          Animation duration in seconds (default: 3)
   --help, -h              Show this help
 
 EXAMPLES
@@ -61,6 +64,9 @@ EXAMPLES
 
   # On cream background
   sri-yantra --background "#FDF8F0" -o on-cream.svg
+
+  # Animated stroke drawing
+  sri-yantra --animated draw -o animated.svg
 
 SHASTRA REFERENCE
   Soundarya Lahari, Verse 11 (Adi Shankaracharya, ~8th century CE)
@@ -116,7 +122,42 @@ function main(): void {
 
   let svg: string;
 
-  if (args["minimal"]) {
+  const VALID_PRESETS = ["draw", "layer-reveal", "breathe", "rotate"];
+
+  if (args["animated"]) {
+    const preset = args["animated"] as string;
+    if (!VALID_PRESETS.includes(preset)) {
+      console.error(
+        `Error: Invalid animation preset "${preset}". Use: ${VALID_PRESETS.join(", ")}`,
+      );
+      process.exit(1);
+    }
+    svg = generateAnimatedSriYantra({
+      animation: preset as AnimationPreset,
+      duration: args["duration"] ? Number(args["duration"]) : undefined,
+      size: args["size"] ? Number(args["size"]) : undefined,
+      color: args["color"] as string | undefined,
+      shivaColor: args["shiva-color"] as string | undefined,
+      shaktiColor: args["shakti-color"] as string | undefined,
+      binduColor: args["bindu-color"] as string | undefined,
+      background: args["background"] as string | undefined,
+      strokeWidth: args["stroke-width"]
+        ? Number(args["stroke-width"])
+        : undefined,
+      binduRadius: args["bindu-radius"]
+        ? Number(args["bindu-radius"])
+        : undefined,
+      outerCircle: args["no-circle"] !== true,
+      sixteenPetalLotus: args["no-lotus"] !== true,
+      eightPetalLotus: args["no-lotus"] !== true,
+      bhupura: args["no-bhupura"] !== true,
+      bindu: args["no-bindu"] !== true,
+      filled: args["filled"] === true,
+      fillOpacity: args["fill-opacity"]
+        ? Number(args["fill-opacity"])
+        : undefined,
+    });
+  } else if (args["minimal"]) {
     svg = generateMinimalMark({
       size: args["size"] ? Number(args["size"]) : undefined,
       color: args["color"] as string | undefined,

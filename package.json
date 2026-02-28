@@ -1,7 +1,7 @@
 {
   "name": "@vibzart/sri-yantra",
-  "version": "0.1.0",
-  "description": "Mathematically precise Sri Yantra SVG generator. Shastra-validated sacred geometry — every marma point a true triple intersection.",
+  "version": "0.2.0",
+  "description": "Mathematically precise Sri Yantra generator — SVG, Canvas, Three.js, React. Shastra-validated sacred geometry with zero-dep core.",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -9,6 +9,26 @@
     ".": {
       "import": "./dist/index.js",
       "types": "./dist/index.d.ts"
+    },
+    "./core": {
+      "import": "./dist/core/index.js",
+      "types": "./dist/core/index.d.ts"
+    },
+    "./svg": {
+      "import": "./dist/svg/index.js",
+      "types": "./dist/svg/index.d.ts"
+    },
+    "./canvas": {
+      "import": "./dist/canvas/index.js",
+      "types": "./dist/canvas/index.d.ts"
+    },
+    "./three": {
+      "import": "./dist/three/index.js",
+      "types": "./dist/three/index.d.ts"
+    },
+    "./react": {
+      "import": "./dist/react/index.js",
+      "types": "./dist/react/index.d.ts"
     }
   },
   "bin": {
@@ -18,12 +38,18 @@
     "build": "tsc",
     "dev": "tsc --watch",
     "generate": "node dist/cli.js",
-    "lint": "tsc --noEmit"
+    "lint": "tsc --noEmit",
+    "prepublishOnly": "npm run build && npm run lint"
   },
   "keywords": [
     "sri-yantra",
     "sacred-geometry",
     "svg",
+    "canvas",
+    "threejs",
+    "react",
+    "webgl",
+    "3d",
     "yantra",
     "sanskrit",
     "vedic",
@@ -31,8 +57,8 @@
     "hindu",
     "shakti",
     "shiva",
-    "panchang",
-    "faithtech"
+    "faithtech",
+    "animation"
   ],
   "author": "Vibz.Art Studio <hello@vibz.art>",
   "license": "MIT",
@@ -41,8 +67,26 @@
     "url": "https://github.com/vibzart/sri-yantra"
   },
   "homepage": "https://vibz.art/tools/sri-yantra",
+  "peerDependencies": {
+    "three": ">=0.160.0",
+    "@react-three/fiber": ">=9.0.0",
+    "@react-three/drei": ">=9.0.0 || >=10.0.0",
+    "react": ">=18.0.0"
+  },
+  "peerDependenciesMeta": {
+    "three": { "optional": true },
+    "@react-three/fiber": { "optional": true },
+    "@react-three/drei": { "optional": true },
+    "react": { "optional": true }
+  },
   "devDependencies": {
     "@types/node": "^25.3.2",
+    "@types/react": "^19.0.0",
+    "@types/three": "^0.170.0",
+    "react": "^19.0.0",
+    "three": "^0.170.0",
+    "@react-three/fiber": "^9.0.0",
+    "@react-three/drei": "^10.0.0",
     "typescript": "^5.7.0"
   }
 }

@@ -198,6 +198,44 @@ Array of the nine avaranas with Sanskrit names, transliterations, and meanings.
 - [Type III Construction — TeXample.net](https://texample.net/sri-yantra/)
 - [GeoGebra Construction — artbody/sri_yantra](https://github.com/artbody/sri_yantra)
 
+## Creating a New Release
+
+This project uses a Makefile for local release prep and GitHub Actions for publishing.
+
+### Prerequisites (one-time setup)
+
+1. Create an npm Automation token at [npmjs.com/settings/tokens](https://www.npmjs.com/settings/tokens)
+2. Add it as `NPM_TOKEN` in your repo's GitHub Settings → Secrets → Actions
+3. Ensure the `@vibzart` scope exists on npm
+
+### Release commands
+
+```bash
+make release-patch   # 0.2.0 → 0.2.1  (bug fixes)
+make release-minor   # 0.2.0 → 0.3.0  (new features)
+make release-major   # 0.2.0 → 1.0.0  (breaking changes)
+```
+
+Each command will:
+1. Bump the version in `package.json`
+2. Build and lint the project
+3. Regenerate all output SVGs
+4. Commit with message `release: v<version>` and push to `main`
+
+GitHub Actions then automatically:
+1. Creates a git tag (`v0.2.1`)
+2. Creates a GitHub Release with auto-generated notes
+3. Publishes `@vibzart/sri-yantra@0.2.1` to npm with provenance
+
+### Other Makefile targets
+
+```bash
+make build      # Compile TypeScript
+make lint       # Type-check without emitting
+make generate   # Regenerate all output SVGs
+make clean      # Remove dist/
+```
+
 ## License
 
 MIT — Sacred knowledge should be freely computable.
