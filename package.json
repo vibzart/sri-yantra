@@ -68,10 +68,10 @@
   },
   "homepage": "https://vibz.art/tools/sri-yantra",
   "peerDependencies": {
-    "three": ">=0.160.0",
-    "@react-three/fiber": ">=9.0.0",
     "@react-three/drei": ">=9.0.0 || >=10.0.0",
-    "react": ">=18.0.0"
+    "@react-three/fiber": ">=9.0.0",
+    "react": ">=18.0.0",
+    "three": ">=0.160.0"
   },
   "peerDependenciesMeta": {
     "three": {
@@ -88,13 +88,16 @@
     }
   },
   "devDependencies": {
+    "@react-three/drei": "^10.0.0",
+    "@react-three/fiber": "^9.0.0",
     "@types/node": "^25.3.2",
     "@types/react": "^19.0.0",
     "@types/three": "^0.170.0",
     "react": "^19.0.0",
     "three": "^0.170.0",
-    "@react-three/fiber": "^9.0.0",
-    "@react-three/drei": "^10.0.0",
     "typescript": "^5.7.0"
+  },
+  "dependencies": {
+    "@vibzart/sri-yantra": "^0.2.1"
   }
 }

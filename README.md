@@ -1,6 +1,19 @@
-# @vibzart/sri-yantra
+<p align="center">
+  <img src="output/sri-yantra.svg" alt="Sri Yantra" width="320" />
+</p>
 
-Mathematically precise Sri Yantra SVG generator. Every marma point a true triple intersection. Every stroke from the shastras.
+<h1 align="center">@vibzart/sri-yantra</h1>
+
+<p align="center">
+  Mathematically precise Sri Yantra SVG generator.<br/>
+  Every marma point a true triple intersection. Every stroke from the shastras.
+</p>
+
+<p align="center">
+  <a href="https://www.npmjs.com/package/@vibzart/sri-yantra"><img src="https://img.shields.io/npm/v/@vibzart/sri-yantra?color=C9501C" alt="npm version" /></a>
+  <a href="https://github.com/vibzart/sri-yantra/blob/main/LICENSE"><img src="https://img.shields.io/npm/l/@vibzart/sri-yantra" alt="license" /></a>
+  <a href="https://www.npmjs.com/package/@vibzart/sri-yantra"><img src="https://img.shields.io/npm/dm/@vibzart/sri-yantra" alt="downloads" /></a>
+</p>
 
 ```
 npm install @vibzart/sri-yantra
@@ -278,6 +291,37 @@ Returns geometry for only the innermost triangles (U4 + D5).
 ### `NINE_AVARANAS`
 
 Array of the nine avaranas with Sanskrit names, transliterations, and meanings.
+
+## Samples
+
+All generated with the CLI — see [output/](output/) for SVG files.
+
+<table>
+<tr>
+<td align="center"><img src="output/sri-yantra.svg" width="180" /><br/><sub>Full Sri Yantra</sub></td>
+<td align="center"><img src="output/dual-color.svg" width="180" /><br/><sub>Dual color</sub></td>
+<td align="center"><img src="output/on-cream.svg" width="180" /><br/><sub>On cream</sub></td>
+</tr>
+<tr>
+<td align="center"><img src="output/filled.svg" width="180" /><br/><sub>Filled</sub></td>
+<td align="center"><img src="output/triangles-only.svg" width="180" /><br/><sub>Triangles only</sub></td>
+<td align="center"><img src="output/dark.svg" width="180" /><br/><sub>Dark</sub></td>
+</tr>
+<tr>
+<td align="center"><img src="output/minimal-mark.svg" width="180" /><br/><sub>Minimal mark</sub></td>
+<td align="center"><img src="output/minimal-dual.svg" width="180" /><br/><sub>Minimal dual</sub></td>
+<td align="center"><img src="output/favicon.svg" width="64" /><br/><sub>Favicon (64px)</sub></td>
+</tr>
+</table>
+
+### Animated
+
+The animated SVGs use pure CSS `@keyframes` — no JavaScript. They play in any browser but GitHub's markdown renderer sanitizes `<style>` tags, so **download the files to see animations**:
+
+- [animated-draw.svg](output/animated-draw.svg) — stroke drawing
+- [animated-layer-reveal.svg](output/animated-layer-reveal.svg) — layer-by-layer reveal
+- [animated-breathe.svg](output/animated-breathe.svg) — pulsing bindu
+- [animated-rotate.svg](output/animated-rotate.svg) — meditative rotation
 
 ## Shastra References
 
