@@ -9,7 +9,7 @@ on:
 jobs:
   build:
     # Skip CI on release commits — the release workflow handles those
-    if: "!startsWith(github.event.head_commit.message, 'release: v')"
+    if: ${{ !startsWith(github.event.head_commit.message, 'release: v') }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

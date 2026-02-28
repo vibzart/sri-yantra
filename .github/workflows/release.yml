@@ -7,7 +7,7 @@ on:
 jobs:
   release:
     # Only run on release commits from `make release-*`
-    if: startsWith(github.event.head_commit.message, 'release: v')
+    if: ${{ startsWith(github.event.head_commit.message, 'release: v') }}
     runs-on: ubuntu-latest
     permissions:
       contents: write
