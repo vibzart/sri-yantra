@@ -32,6 +32,11 @@ generate: build
 #   make release-patch   # 0.2.0 → 0.2.1
 #   make release-minor   # 0.2.0 → 0.3.0
 #   make release-major   # 0.2.0 → 1.0.0
+#
+# Flow:
+#   1. Bumps version, builds, lints, generates SVGs
+#   2. Commits, tags, and pushes to main
+#   3. You then create a GitHub Release from the tag to trigger npm publish
 
 define release
 	@echo "── Bumping version ($(1)) ──"
@@ -46,10 +51,13 @@ define release
 	$(eval VERSION := $(shell node -p "require('./package.json').version"))
 	git add -A
 	git commit -m "release: v$(VERSION)"
-	git push origin main
+	git tag "v$(VERSION)"
+	git push origin main --tags
 	@echo ""
-	@echo "✓ Pushed release: v$(VERSION)"
-	@echo "  GitHub Actions will now tag, create a release, and publish to npm."
+	@echo "✓ Pushed v$(VERSION) with tag"
+	@echo ""
+	@echo "Next step: Create a GitHub Release to publish to npm"
+	@echo "  → https://github.com/vibzart/sri-yantra/releases/new?tag=v$(VERSION)"
 endef
 
 release-patch:

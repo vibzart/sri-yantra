@@ -1,17 +1,14 @@
-name: Release & Publish
+name: Publish to npm
 
 on:
-  push:
-    branches: [main]
-  workflow_dispatch:
+  release:
+    types: [published]
 
 jobs:
-  release:
-    # Auto-trigger on release commits, or run manually via workflow_dispatch
-    if: "github.event_name == 'workflow_dispatch' || startsWith(github.event.head_commit.message, 'release: v')"
+  publish:
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: read
       id-token: write
     steps:
       - uses: actions/checkout@v4
@@ -37,20 +34,6 @@ jobs:
           node dist/cli.js --minimal --output /tmp/test-min.svg
           test -s /tmp/test-min.svg || (echo "Minimal CLI produced empty output" && exit 1)
           echo "✓ CLI generates valid SVGs"
-
-      - name: Extract version
-        id: version
-        run: echo "version=v$(node -p 'require("./package.json").version')" >> "$GITHUB_OUTPUT"
-
-      - name: Create git tag
-        run: |
-          git tag ${{ steps.version.outputs.version }}
-          git push origin ${{ steps.version.outputs.version }}
-
-      - name: Create GitHub Release
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: gh release create ${{ steps.version.outputs.version }} --generate-notes
 
       - name: Publish to npm
         run: npm publish --access public --provenance

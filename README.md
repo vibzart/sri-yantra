@@ -297,7 +297,7 @@ Array of the nine avaranas with Sanskrit names, transliterations, and meanings.
 
 ## Creating a New Release
 
-This project uses a Makefile for local release prep and GitHub Actions for publishing.
+This project uses a Makefile for local prep and GitHub Releases to trigger npm publishing.
 
 ### Release commands
 
@@ -311,12 +311,13 @@ Each command will:
 1. Bump the version in `package.json`
 2. Build and lint the project
 3. Regenerate all output SVGs
-4. Commit with message `release: v<version>` and push to `main`
+4. Commit, create a git tag (`v0.2.1`), and push to `main`
 
-GitHub Actions then automatically:
-1. Creates a git tag (`v0.2.1`)
-2. Creates a GitHub Release with auto-generated notes
-3. Publishes `@vibzart/sri-yantra@0.2.1` to npm with provenance
+Then, to publish to npm:
+1. Go to **GitHub → Releases → Draft a new release**
+2. Select the tag that was just pushed (e.g. `v0.2.1`)
+3. Click **Generate release notes**, then **Publish release**
+4. GitHub Actions automatically publishes `@vibzart/sri-yantra@0.2.1` to npm with provenance
 
 ### Other Makefile targets
 
