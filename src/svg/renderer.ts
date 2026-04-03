@@ -12,7 +12,12 @@ import {
   prepareLotus,
   prepareBhupura,
 } from "../core/transform.js";
-import type { BaseRenderOptions, PreparedGeometry } from "../core/types.js";
+import {
+  resolveFullYantraOptics,
+  resolveMinimalMarkOptics,
+  faviconOverrides,
+} from "../core/optical.js";
+import type { BaseRenderOptions, PreparedGeometry, StrokeLinecap } from "../core/types.js";
 
 export interface RenderOptions extends BaseRenderOptions {
   outerCircle?: boolean;
@@ -32,13 +37,15 @@ function renderTrianglesToSvg(
   shaktiColor: string,
   filled: boolean,
   fillOpacity: number,
+  linecap: StrokeLinecap = "butt",
 ): string[] {
+  const capAttr = linecap !== "butt" ? ` stroke-linecap="${linecap}"` : "";
   return prepared.triangles.map((tri) => {
     const triColor = tri.tattva === "shiva" ? shivaColor : shaktiColor;
     const fillAttr = filled
       ? `fill="${triColor}" fill-opacity="${fillOpacity}"`
       : `fill="none"`;
-    return `<path d="${tri.pathData}" ${fillAttr} stroke="${triColor}" stroke-width="${prepared.strokeWidth}" stroke-linejoin="miter" data-id="${tri.id}" data-tattva="${tri.tattva}" />`;
+    return `<path d="${tri.pathData}" ${fillAttr} stroke="${triColor}" stroke-width="${prepared.strokeWidth}" stroke-linejoin="miter"${capAttr} data-id="${tri.id}" data-tattva="${tri.tattva}" />`;
   });
 }
 
@@ -96,16 +103,31 @@ export function generateSriYantra(options: RenderOptions = {}): string {
     shaktiColor,
     binduColor,
     background = "none",
-    strokeWidth = 0.004,
-    binduRadius = 0.008,
     outerCircle = true,
-    sixteenPetalLotus = true,
-    eightPetalLotus = true,
-    bhupura = true,
     bindu = true,
     filled = false,
     fillOpacity = 0.1,
+    targetUse,
+    strokeLinecap: linecap = "butt",
   } = options;
+
+  // Optical scaling: resolve stroke/bindu proportions from targetUse preset,
+  // allowing explicit user values to override.
+  const optics = resolveFullYantraOptics(
+    targetUse,
+    options.strokeWidth,
+    options.binduRadius,
+    0.004, // default strokeWidth
+    0.008, // default binduRadius
+  );
+  const strokeWidth = optics.strokeWidth;
+  const binduRadius = optics.binduRadius;
+
+  // Favicon mode auto-disables decorative outer avaranas that become noise at small sizes.
+  const favOverrides = faviconOverrides(targetUse);
+  const bhupura = options.bhupura ?? favOverrides.bhupura ?? true;
+  const sixteenPetalLotus = options.sixteenPetalLotus ?? favOverrides.sixteenPetalLotus ?? true;
+  const eightPetalLotus = options.eightPetalLotus ?? favOverrides.eightPetalLotus ?? true;
 
   const geo = computeGeometry();
   const paddingFrac = bhupura ? 0.05 : 0.02;
@@ -145,7 +167,7 @@ export function generateSriYantra(options: RenderOptions = {}): string {
   }
 
   elements.push(`<!-- Avaranas 4-8: Nine interlocking triangles (4 Shiva ↑ + 5 Shakti ↓) = 43 sub-triangles -->`);
-  elements.push(...renderTrianglesToSvg(prepared, shivaC, shaktiC, filled, fillOpacity));
+  elements.push(...renderTrianglesToSvg(prepared, shivaC, shaktiC, filled, fillOpacity, linecap));
 
   if (bindu) {
     elements.push(`<!-- Avarana 9: Sarvanandamaya Chakra (सर्वानन्दमय चक्र) — Bindu -->`);
@@ -173,15 +195,29 @@ export function generateMinimalMark(options: MinimalMarkOptions = {}): string {
     shaktiColor,
     binduColor,
     background = "none",
-    strokeWidth = 0.006,
-    binduRadius = 0.015,
     enclosingCircle = false,
     filled = false,
     fillOpacity = 0.1,
+    targetUse,
+    strokeLinecap: linecap = "butt",
   } = options;
 
+  // Optical scaling: resolve stroke/bindu/padding from targetUse preset.
+  const optics = resolveMinimalMarkOptics(
+    targetUse,
+    options.strokeWidth,
+    options.binduRadius,
+    0.006, // default strokeWidth
+    0.015, // default binduRadius
+  );
+
   const geo = getMinimalGeometry();
-  const prepared = prepareMinimalForRender(geo, { size, padding: 0.1, strokeWidth, binduRadius });
+  const prepared = prepareMinimalForRender(geo, {
+    size,
+    padding: optics.padding,
+    strokeWidth: optics.strokeWidth,
+    binduRadius: optics.binduRadius,
+  });
 
   const shivaC = shivaColor ?? color;
   const shaktiC = shaktiColor ?? color;
@@ -199,7 +235,7 @@ export function generateMinimalMark(options: MinimalMarkOptions = {}): string {
     );
   }
 
-  elements.push(...renderTrianglesToSvg(prepared, shivaC, shaktiC, filled, fillOpacity));
+  elements.push(...renderTrianglesToSvg(prepared, shivaC, shaktiC, filled, fillOpacity, linecap));
   elements.push(`<circle cx="${prepared.bindu.x}" cy="${prepared.bindu.y}" r="${prepared.bindu.radius}" fill="${binduC}" />`);
 
   return [

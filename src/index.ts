@@ -24,6 +24,9 @@ export {
   prepareLotus,
   prepareBhupura,
   NINE_AVARANAS,
+  resolveFullYantraOptics,
+  resolveMinimalMarkOptics,
+  faviconOverrides,
 } from "./core/index.js";
 
 export type {
@@ -38,6 +41,9 @@ export type {
   PreparedLotus,
   PreparedBhupura,
   BaseRenderOptions,
+  TargetUse,
+  StrokeLinecap,
+  OpticalProfile,
 } from "./core/index.js";
 
 // SVG renderers (zero dependencies)

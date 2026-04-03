@@ -92,8 +92,10 @@
     "@react-three/fiber": "^9.0.0",
     "@types/node": "^25.3.2",
     "@types/react": "^19.0.0",
+    "@types/sharp": "^0.32.0",
     "@types/three": "^0.170.0",
     "react": "^19.0.0",
+    "sharp": "^0.34.5",
     "three": "^0.170.0",
     "typescript": "^5.7.0"
   },

@@ -1,4 +1,4 @@
-.PHONY: build lint clean generate release-patch release-minor release-major
+.PHONY: build lint clean generate images release-patch release-minor release-major
 
 # ─── Development ──────────────────────────────────────────────
 
@@ -26,6 +26,12 @@ generate: build
 	node dist/cli.js --animated breathe -o output/animated-breathe.svg
 	node dist/cli.js --animated rotate -o output/animated-rotate.svg
 	@echo "✓ Generated 13 SVGs in output/"
+
+images: generate
+	node scripts/export-images.js
+
+social: generate
+	node scripts/export-images.js --social-only
 
 # ─── Release ──────────────────────────────────────────────────
 # Usage:
