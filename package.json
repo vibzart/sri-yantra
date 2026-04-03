@@ -1,34 +1,40 @@
 {
   "name": "@vibzart/sri-yantra",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Mathematically precise Sri Yantra generator — SVG, Canvas, Three.js, React. Shastra-validated sacred geometry with zero-dep core.",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
-      "types": "./dist/index.d.ts"
+      "default": "./dist/index.js"
     },
     "./core": {
+      "types": "./dist/core/index.d.ts",
       "import": "./dist/core/index.js",
-      "types": "./dist/core/index.d.ts"
+      "default": "./dist/core/index.js"
     },
     "./svg": {
+      "types": "./dist/svg/index.d.ts",
       "import": "./dist/svg/index.js",
-      "types": "./dist/svg/index.d.ts"
+      "default": "./dist/svg/index.js"
     },
     "./canvas": {
+      "types": "./dist/canvas/index.d.ts",
       "import": "./dist/canvas/index.js",
-      "types": "./dist/canvas/index.d.ts"
+      "default": "./dist/canvas/index.js"
     },
     "./three": {
+      "types": "./dist/three/index.d.ts",
       "import": "./dist/three/index.js",
-      "types": "./dist/three/index.d.ts"
+      "default": "./dist/three/index.js"
     },
     "./react": {
+      "types": "./dist/react/index.d.ts",
       "import": "./dist/react/index.js",
-      "types": "./dist/react/index.d.ts"
+      "default": "./dist/react/index.js"
     }
   },
   "bin": {
