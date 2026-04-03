@@ -1,6 +1,6 @@
 {
   "name": "@vibzart/sri-yantra",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Mathematically precise Sri Yantra generator — SVG, Canvas, Three.js, React. Shastra-validated sacred geometry with zero-dep core.",
   "type": "module",
   "main": "./dist/index.js",
